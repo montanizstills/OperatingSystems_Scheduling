@@ -2,7 +2,15 @@ from collections import deque
 ALGORITHM_NAME = "RoundRobin"
 
 arrivals = {0: "A", 3: "B", 6: "C", 8: "D"}
-services = [10,2,8,7]
+test_processes = {
+    'A': (0, 4),
+    'B': (1, 9),
+    'C': (4, 2),
+    'D': (6, 7)
+}
+
+
+# services = [10,2,8,7]
 n = len(arrivals)
 sumOfServiceTimes = 0
 #Setting time quantum slightly larger than avg service time
