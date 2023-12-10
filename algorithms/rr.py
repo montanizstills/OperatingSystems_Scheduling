@@ -78,9 +78,11 @@ currProcess = ""
 # Count to check whether process has executed up to quantum
 currCount = -1
 
-
 for i in range(max(sum(services.values()) + 1, latestLength)):
     currCount += 1
+    # Increase the wait time for all the processes in queue
+    increaseWaitTime(queue)
+    
     # If process arrives then begin servicing if no process currently running
     # If there is an existing process, add this to queue
     if i in arrivals:
@@ -90,18 +92,24 @@ for i in range(max(sum(services.values()) + 1, latestLength)):
                 queue.append(arrivals[i][j])
 
         else:
-            for j in range(0, len(arrivals[i])):
+            for j in range(len(arrivals[i])):
                 queue.append(arrivals[i][j])
+
     # If no process has arrived, then currProcess is set to ""
     elif currProcess == "":
         currCount = -1
         continue
 
-    # If a process is running, reduce remaining time to completion by 1 second
-    if currProcess != "":
-        rt[currProcess] -= 1
+    # If the process had been completed, then remove from processor and pop process from queue
+    if currProcess != "" and rt[currProcess] == 0:
+        if queue:
+            currProcess = queue.popleft()
+            currCount = 0
+        else:
+            currProcess = ""
+            currCount = -1
 
-    # If current count reaches quantum then put process back in queue
+        # If current count reaches quantum then put process back in queue
     if currCount == quantum:
         queue.append(currProcess)
 
@@ -113,17 +121,10 @@ for i in range(max(sum(services.values()) + 1, latestLength)):
             currProcess = ""
             currCount = -1
 
-    # If the process had been completed, then remove from processor and pop process from queue
-    elif rt[currProcess] == 0:
-        if queue:
-            currProcess = queue.popleft()
-            currCount = 0
-        else:
-            currProcess = ""
-            currCount = -1
+    # If a process is running, reduce remaining time to completion by 1 second
+    if currProcess != "":
+        rt[currProcess] -= 1
 
-    # Increase the wait time for all the processes in queue
-    increaseWaitTime(queue)
 
 print("wait times = ", dict(sorted(wt.items())))
 
