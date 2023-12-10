@@ -16,7 +16,8 @@ import math
 from collections import deque
 ALGORITHM_NAME = "RoundRobin"
 
-arrivals = {0: "A", 3: "B", 6: "C", 8: "D"}
+# Saving the value as a list because multiple processes can arrive at the same time
+arrivals = {0: ["A"], 3: ["B"], 6: ["C"], 8: ["D"]}
 services = {"A": 10, "B": 2, "C": 8, "D": 7}
 '''
 test_processes = {
@@ -31,9 +32,12 @@ n = len(services)
 #waiting time
 wt = {}
 
-# Setting up this variable to see how many seconds we have to loop to.
+# Setting up latestLength to see how many seconds we have to loop to.
 latestArrival = max(arrivals.keys())
-latestLength = latestArrival + services[arrivals[latestArrival]]
+longestService = 0
+for process in arrivals[latestArrival]:
+    longestService = max(longestService, services[process])
+latestLength = latestArrival + longestService
 
 # Setting time quantum slightly larger than avg service time
 quantum = 0
@@ -77,15 +81,17 @@ currCount = -1
 
 for i in range(max(sum(services.values()) + 1, latestLength)):
     currCount += 1
-    
     # If process arrives then begin servicing if no process currently running
     # If there is an existing process, add this to queue
     if i in arrivals:
         if currProcess == "":
-            currProcess = arrivals[i]
+            currProcess = arrivals[i][0]
+            for j in range(1, len(arrivals[i])):
+                queue.append(arrivals[i][j])
+
         else:
-            queue.append(arrivals[i])
-            
+            for j in range(0, len(arrivals[i])):
+                queue.append(arrivals[i][j])
     # If no process has arrived, then currProcess is set to ""
     elif currProcess == "":
         currCount = -1
@@ -123,5 +129,11 @@ print("wait times = ", dict(sorted(wt.items())))
 
 tt = calculateTurnaroundTime(services, wt)
 print("turnaround time =", tt)
+
+
+
+
+
+
 
 
