@@ -38,16 +38,20 @@ test_processes = {
 def convertData(data):
     arrivals = {}
     services = {}
+
     for key in data:
-        services[key] = data[key][1]
+        item = eval(data[key])
+        services[key] = item[1]
     for key in data:
-        arrival = data[key][0]
+        item = eval(data[key])
+        arrival = item[0]
+        # print(arrival)
+        # exit(1)
         if arrival in arrivals:
             arrivals[arrival] = arrivals[arrival].append(key)
         else:
             arrivals[arrival] = [key]
     return arrivals, services
-
 
 class Process:
     def __init__(self, process_name, arrival_time, service_time, remaining_time):

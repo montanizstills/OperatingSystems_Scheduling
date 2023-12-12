@@ -27,7 +27,23 @@ test_processes = {
     'D': (8, 7)
 }
 '''
+def convertData(data):
+    arrivals = {}
+    services = {}
 
+    for key in data:
+        item = eval(data[key])
+        services[key] = item[1]
+    for key in data:
+        item = eval(data[key])
+        arrival = item[0]
+        # print(arrival)
+        # exit(1)
+        if arrival in arrivals:
+            arrivals[arrival] = arrivals[arrival].append(key)
+        else:
+            arrivals[arrival] = [key]
+    return arrivals, services
 def run(data):
     n = len(services)
 
