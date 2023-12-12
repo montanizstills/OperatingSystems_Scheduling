@@ -1,1 +1,0 @@
-ALGORITHM_NAME = "Highest-Response-Ratio-Next"
