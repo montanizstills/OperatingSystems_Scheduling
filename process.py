@@ -24,9 +24,5 @@ class Process:
             self.service_time_remaining -= 1
             self.executed_time_during_turn += 1
 
-    def get_process_waiting_time(self):
-        pass
-        # return self.wait_time
-
     def get_turnaround_time(self):
         pass
