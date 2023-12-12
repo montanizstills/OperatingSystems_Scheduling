@@ -42,14 +42,14 @@ class FirstComeFirstServe(Algorithm):
         :param queue: The queue to exercise.
         :return: None
         """
-        process_to_execute = queue.pop_queue()
-        process_to_execute.do_critical_section()
+        while len(queue.get_instance()) > 0:
+            process_to_execute: Process = queue.pop_queue()
+            process_to_execute.do_critical_section()
 
     def preemptive(self, queue: Queue, time_quantum: int = -1):
         if time_quantum == -1:
             exit("Please specify a time quantum.")
-        process_to_execute: Process
-        process_to_execute = queue.pop_queue()
+        process_to_execute: Process = queue.pop_queue()
         while process_to_execute.executed_time_during_turn != time_quantum:
             process_to_execute.do_critical_section()
 

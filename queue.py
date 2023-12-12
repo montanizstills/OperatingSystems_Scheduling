@@ -17,7 +17,8 @@ class Queue:
 
     def push_queue(self, process: Process) -> None:
         print(f"Queue {self} has pushed a new item: {process}, `{process.name}`")
-        self.arrival_flag = True and self.get_instance().appendleft(process)
+        self.arrival_flag = True
+        self.get_instance().appendleft(process)
         self.arrival_flag = False
 
     def pop_queue(self) -> Process:
