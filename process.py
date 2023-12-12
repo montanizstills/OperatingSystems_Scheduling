@@ -1,3 +1,6 @@
+import time
+
+
 class Process:
     name: str
     arrival_time: int
@@ -11,3 +14,9 @@ class Process:
         self.service_time = service_time
         self.service_time_remaining = service_time
         self.wait_time = 0
+
+    def do_critical_section(self):
+        while self.service_time_remaining > 0:
+            print(f"Process {self.name} is currently running")
+            time.sleep(1)
+            self.service_time_remaining -= 1

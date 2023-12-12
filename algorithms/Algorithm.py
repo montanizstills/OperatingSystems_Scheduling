@@ -19,14 +19,13 @@ class Algorithm:
     def get_execution_mode(self):
         return self.EXECUTION_MODE
 
-    def preemptive(self, queue: collections.deque):
-        raise NotImplementedError
-
-    def non_preemptive(self, queue: collections.deque):
-        raise NotImplementedError
+    # def preemptive(self, queue: collections.deque):
+    #     raise NotImplementedError
+    #
+    # def non_preemptive(self, queue: collections.deque):
+    #     raise NotImplementedError
 
     def run(self, queue: collections.deque):
-        # get the attribute defined in param 2, return the function, then immeidately execute
         getattr(self, self.get_execution_mode().value.lower())(queue)
 
     def get_next_earliest_process(self, queue: collections.deque) -> Process:
@@ -39,11 +38,11 @@ class Algorithm:
         print(f"next earliest process: {shortest.name}")
         return shortest
 
-    def execute_process(self, process: Process) -> None:
-        for _i in range(1, process.service_time + 1):
-            print(f"executing process {process.name}...")
-            time.sleep(1)
-            print(f"Elapsed time {_i}")
+    # def execute_process(self, process: Process) -> None:
+    #     for _i in range(1, process.service_time + 1):
+    #         print(f"executing process {process.name}...")
+    #         time.sleep(1)
+    #         print(f"Elapsed time {_i}")
 
 
 class FirstComeFirstServe(Algorithm):
@@ -52,10 +51,17 @@ class FirstComeFirstServe(Algorithm):
         super().__init__(execution_mode)
 
     def non_preemptive(self, queue: collections.deque):
-        print(f"executing {self.ALGORITHM_NAME} with options: {self.EXECUTION_MODE}")
+        pass
+        while queue:
+            process_to_execute: Process = queue.popleft()  # throws IndexError if empty
+            if process_to_execute.service_time_remaining == 0:
+                continue
+            process_to_execute.do_critical_section()
 
-    def preemptive(self, queue: collections.deque):
-        print(f"executing {self.ALGORITHM_NAME} with options: {self.EXECUTION_MODE}")
+    def preemptive(self, queue: collections.deque, time_quantum: int = -1):
+        pass
+        if time_quantum == -1:
+            exit("Please specify a time quantum.")
 
 
 class HighestResponseRatio(Algorithm):
@@ -64,10 +70,10 @@ class HighestResponseRatio(Algorithm):
         super().__init__(execution_mode)
 
     def non_preemptive(self, queue: collections.deque):
-        print(f"executing {self.ALGORITHM_NAME} with options: {self.EXECUTION_MODE}")
+        pass
 
     def preemptive(self, queue: collections.deque):
-        print(f"executing {self.ALGORITHM_NAME} with options: {self.EXECUTION_MODE}")
+        pass
 
 
 class ShortestTimeRemaining(Algorithm):
@@ -76,10 +82,10 @@ class ShortestTimeRemaining(Algorithm):
         super().__init__(execution_mode)
 
     def non_preemptive(self, queue: collections.deque):
-        print(f"executing {self.ALGORITHM_NAME} with options: {self.EXECUTION_MODE}")
+        pass
 
     def preemptive(self, queue: collections.deque):
-        print(f"executing {self.ALGORITHM_NAME} with options: {self.EXECUTION_MODE}")
+        pass
 
 
 class MultilevelFeedback(Algorithm):
@@ -88,10 +94,10 @@ class MultilevelFeedback(Algorithm):
         super().__init__(execution_mode)
 
     def non_preemptive(self, queue: collections.deque):
-        print(f"executing {self.ALGORITHM_NAME} with options: {self.EXECUTION_MODE}")
+        pass
 
     def preemptive(self, queue: collections.deque):
-        print(f"executing {self.ALGORITHM_NAME} with options: {self.EXECUTION_MODE}")
+        pass
 
 
 class RoundRobin(Algorithm):
@@ -100,10 +106,10 @@ class RoundRobin(Algorithm):
         super().__init__(execution_mode)
 
     def non_preemptive(self, queue: collections.deque):
-        print(f"executing {self.ALGORITHM_NAME} with options: {self.EXECUTION_MODE}")
+        pass
 
     def preemptive(self, queue: collections.deque):
-        print(f"executing {self.ALGORITHM_NAME} with options: {self.EXECUTION_MODE}")
+        pass
 
 
 class ShortestProcess(Algorithm):
@@ -112,7 +118,7 @@ class ShortestProcess(Algorithm):
         super().__init__(execution_mode)
 
     def non_preemptive(self, queue: collections.deque):
-        print(f"executing {self.ALGORITHM_NAME} with options: {self.EXECUTION_MODE}")
+        pass
 
     def preemptive(self, queue: collections.deque):
-        print(f"executing {self.ALGORITHM_NAME} with options: {self.EXECUTION_MODE}")
+        pass
