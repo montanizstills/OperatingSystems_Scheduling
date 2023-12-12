@@ -2,21 +2,23 @@ import threading
 
 from algorithm import Algorithm
 from queue import Queue
+from queue_observer import QueueObserver
 
 
 class CPU(threading.Thread):
-    executing_time: float
-    total_elapsed_time: float
-    process_execution_start_time: float
-    queue: Queue
     algorithm_execution_type: Algorithm
 
     def __init__(self, queue: Queue = None):
         super().__init__()
         self.queue = queue
+        self.observer = QueueObserver()
         self.interrupt_event = threading.Event()
+        executing_time: float
+        total_elapsed_time: float
+        process_execution_start_time: float
 
     def run(self):
+        # self.observer.start()
         while len(self.queue.get_instance()) > 0:
             if self.interrupt_event.is_set():
                 print(f"{self.__class__}{self.__class__.name}: CPU interrupt has been called")

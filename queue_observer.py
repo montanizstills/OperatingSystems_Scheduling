@@ -1,22 +1,26 @@
-import collections
 import threading
 
-from cpu import CPU
+from queue import Queue
 
 
 class QueueObserver(threading.Thread):
-    queue: collections.deque
+    arriving_processes: dict
+    queue: Queue
     previous_queue_count: int
-    cpu: CPU
+    interrupt_event = threading.Event()
 
-    def __init__(self, queue):
+    def __init__(self):
         super().__init__()
+        self.queue = Queue()
+        self.previous_queue_count = 0
 
     def get_queue_count(self):
-        return len(self.queue)
+        return len(self.queue.get_instance())
 
     def run(self):
-        while self.is_alive():
-            if self.get_queue_count() < self.previous_queue_count:
-                self.cpu.interrupt_event.set()
-                self.previous_queue_count += 1
+        while True:
+            if self.queue.arrival_flag:
+                print(f"{self.__class__} has detected the queue has been appended to.")
+                # self.interrupt_event.set()
+
+

@@ -1,4 +1,3 @@
-import collections
 import enum
 
 from process import Process
@@ -11,7 +10,6 @@ class Algorithm:
         NON_PREEMPTIVE = "NON_PREEMPTIVE"
 
     ALGORITHM_NAME: str
-    EXECUTION_MODE: ExecutionMode
 
     def __init__(self, execution_mode: ExecutionMode):
         self.EXECUTION_MODE = execution_mode
@@ -23,12 +21,12 @@ class Algorithm:
         getattr(self, self.get_execution_mode().value.lower())(queue)
 
     def get_next_earliest_process(self, queue: Queue) -> Process:
-        early: Process = min(queue, key=lambda process: process.arrival_time)
+        early: Process = min(queue.get_instance(), key=lambda process: process.arrival_time)
         print(f"next earliest process: {early.name}")
         return early
 
     def get_next_shortest_process(self, queue: Queue) -> Process:
-        shortest: Process = min(queue, key=lambda process: process.service_time)
+        shortest: Process = min(queue.get_instance(), key=lambda process: process.service_time)
         print(f"next earliest process: {shortest.name}")
         return shortest
 
