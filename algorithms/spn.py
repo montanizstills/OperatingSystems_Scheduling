@@ -12,7 +12,6 @@ when a process arrives:
         2. a process doesnt finish - all other processes in queue increase their wt by one.
 queue must be sorted after every insertion in descending order of their service times.
 '''
-import math
 
 ALGORITHM_NAME = "Shortest Process Next"
 
@@ -31,9 +30,11 @@ def convertData(data):
     arrivals = {}
     services = {}
     for key in data:
-        services[key] = data[key][1]
+        services[key] = int(data[key][1])
     for key in data:
-        arrival = data[key][0]
+        arrival = eval(data[key])[0]
+        # print(arrival)
+        # exit(1)
         if arrival in arrivals:
             arrivals[arrival] = arrivals[arrival].append(key)
         else:
@@ -75,7 +76,8 @@ def run(data):
         if i in arrivals:
             for j in range(len(arrivals[i])):
                 process_name = arrivals[i][j]
-                arrival, service = data[process_name]
+                arrival = i
+                service = services[process_name]
                 process = Process(process_name, arrival, service)
                 queue.append(process)
             # Sorting the queue in decreasing order of their service times
