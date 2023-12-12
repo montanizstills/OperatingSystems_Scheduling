@@ -1,9 +1,4 @@
-import collections
-
 from flask import Flask, render_template
-
-from algorithms.Algorithm import FirstComeFirstServe
-from cpu import CPU
 
 app = Flask(__name__)
 
