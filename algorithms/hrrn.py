@@ -16,7 +16,6 @@ once a process finishes:
 
 queue must be sorted after every insertion in descending order of their hrrn.
 every time the waiting time is increased -> update spn
-
 '''
 
 import math
