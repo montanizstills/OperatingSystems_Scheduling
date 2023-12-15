@@ -98,7 +98,8 @@ def run(data):
         if i in arrivals:
             for j in range(len(arrivals[i])):
                 process_name = arrivals[i][j]
-                arrival, service = data[process_name]
+                arrival = i
+                service = services[process_name]
                 process = Process(process_name, arrival, service)
                 queue.append(process)
 
@@ -165,10 +166,10 @@ def calculateTurnaroundTime(services, wt):
 
 if __name__ == "__main__":
     data = {
-        'A': (0, 10),
-        'B': (3, 2),
-        'C': (6, 8),
-        'D': (8, 7)
+        'A': '(0, 10)',
+        'B': '(3, 2)',
+        'C': '(6, 8)',
+        'D': '(8, 7)'
     }
     run(data)
 

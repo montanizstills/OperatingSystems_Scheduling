@@ -24,16 +24,7 @@ queue must be sorted after every insertion in descending order of their service 
 import math
 ALGORITHM_NAME = "ShortestTimeRemaining"
 
-# Saving the value as a list because multiple processes can arrive at the same time
-arrivals = {0: ["A"], 3: ["B"], 6: ["C"], 8: ["D"]}
-services = {"A": 10, "B": 2, "C": 8, "D": 7}
 
-test_processes = {
-    'A': (0, 10),
-    'B': (3, 2),
-    'C': (6, 8),
-    'D': (8, 7)
-}
 
 def convertData(data):
     arrivals = {}
@@ -59,8 +50,6 @@ class Process:
         self.arrival_time = arrival_time
         self.service_time = service_time
         self.remaining_time = remaining_time
-
-
 
 
 # Function to increase the wait times of the processes every second they are in the waiting queue.
@@ -115,7 +104,8 @@ def run(data):
                 currProcess = ""
             for j in range(len(arrivals[i])):
                 process_name = arrivals[i][j]
-                arrival, service = test_processes[process_name]
+                arrival = i
+                service = services[process_name]
                 remaining = service
                 process = Process(process_name, arrival, service, remaining)
                 queue.append(process)
@@ -162,10 +152,10 @@ def run(data):
 
 if __name__ == "__main__":
     data = {
-        'A': (0, 10),
-        'B': (3, 2),
-        'C': (6, 8),
-        'D': (8, 7)
+        'A': '(0, 10)',
+        'B': '(3, 2)',
+        'C': '(6, 8)',
+        'D': '(8, 7)'
     }
     run(data)
 
