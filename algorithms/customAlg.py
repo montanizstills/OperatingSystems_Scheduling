@@ -89,7 +89,6 @@ def run(data):
         rt[i] = services[i]
 
     for i in range(max(sum(services.values()) + 1, latestLength)):
-        print("time = ", i)
 
         # Increase the wait time for all the processes in queue
         increaseWaitTime(queue, wt)
@@ -124,14 +123,6 @@ def run(data):
         # If a process is running, reduce remaining time to completion by 1 second
         if currProcess != "" and rt[currProcess.process_name] != 0:
             rt[currProcess.process_name] -= 1
-
-        print("queue =")
-        if queue:
-            for item in queue:
-                print(item.process_name, ":", item.ratio)
-
-        if currProcess:
-            print("curr process =", currProcess.process_name)
 
 
     print("wait times = ", dict(sorted(wt.items())))
