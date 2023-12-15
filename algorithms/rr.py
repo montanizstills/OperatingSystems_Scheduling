@@ -14,6 +14,7 @@ when a process arrives:
 '''
 import math
 from collections import deque
+
 ALGORITHM_NAME = "RoundRobin"
 
 
@@ -40,7 +41,7 @@ def run(data):
     arrivals, services = convertData(data)
     n = len(services)
 
-    #waiting time
+    # waiting time
     wt = {}
 
     # Setting up latestLength to see how many seconds we have to loop to.
@@ -120,13 +121,18 @@ def run(data):
         if currProcess != "":
             rt[currProcess] -= 1
 
-    print("wait times = ", dict(sorted(wt.items())))
+    # print("wait times = ", dict(sorted(wt.items())))
 
     tt = calculateTurnaroundTime(services, wt)
     print("turnaround time =", tt)
 
     avg_tt = sum(tt.values()) / len(tt.values())
     print("Average turnaround time  =", avg_tt)
+
+    return {
+        "turnaroundtimes": tt,
+        "averageTurnAroundTime": avg_tt
+    }
 
 
 # Function to increase the wait times of the processes every second they are in the waiting queue.
@@ -152,11 +158,3 @@ if __name__ == "__main__":
         'D': '(8, 7)'
     }
     run(data)
-
-
-
-
-
-
-
-

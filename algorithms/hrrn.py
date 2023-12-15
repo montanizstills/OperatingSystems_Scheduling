@@ -140,6 +140,11 @@ def run(data):
     avg_tt = sum(tt.values()) / len(tt.values())
     print("Average turnaround time  =", avg_tt)
 
+    return {
+        "turnaroundtimes": tt,
+        "averageTurnAroundTime": avg_tt
+    }
+
 
 # Function to increase the wait times of the processes every second they are in the waiting queue.
 def increaseWaitTime(queue, wt):

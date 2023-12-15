@@ -8,33 +8,28 @@ app = Flask(__name__)
 @app.route("/spn", methods=["POST"])
 def do_spn():
     # print(request.get_json())
-    spn.run(request.get_json())
-    return ""
+    return spn.run(request.get_json())
 
 
 @app.route("/str", methods=["POST"])
 def do_str():
     # print(request.get_json())
-    str.run(request.get_json())
-    return ""
+    return str.run(request.get_json())
 
 @app.route("/rr", methods=["POST"])
 def do_rr():
     # print(request.get_json())
-    rr.run(request.get_json())
-    return ""
+    return rr.run(request.get_json())
 
 @app.route("/hrrn", methods=["POST"])
 def do_hrrn():
     # print(request.get_json())
-    hrrn.run(request.get_json())
-    return ""
+    return hrrn.run(request.get_json())
 
 @app.route("/own", methods=["POST"])
 def do_own():
     # print(request.get_json())
-    customAlg.run(request.get_json())
-    return ""
+    return customAlg.run(request.get_json())
 
 
 # if __name__ == '__main__':

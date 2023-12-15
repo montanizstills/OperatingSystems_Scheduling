@@ -151,6 +151,11 @@ def run(data):
     avg_tt = sum(tt.values()) / len(tt.values())
     print("Average turnaround time  =", avg_tt)
 
+    return {
+        "turnaroundtimes": tt,
+        "averageTurnAroundTime": avg_tt
+    }
+
 
 
 
