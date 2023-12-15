@@ -1,9 +1,15 @@
 from flask import Flask, render_template, request, jsonify
 
-from algorithms import spn, str, rr, hrrn, customAlg
+from algorithms import spn, srt, rr, hrrn, customAlg, fcfs
 
 app = Flask(__name__)
+app.config["CORS_HEADERS"] = ['Access-Control-Allow-Origin']
+app.config["CORS_ORIGINS"] = ["*"]
 
+@app.route("/fcfs", methods=["POST"])
+def do_fcfs():
+    # print(request.get_json())
+    return fcfs.run(request.get_json())
 
 @app.route("/spn", methods=["POST"])
 def do_spn():
@@ -11,10 +17,10 @@ def do_spn():
     return spn.run(request.get_json())
 
 
-@app.route("/str", methods=["POST"])
+@app.route("/srt", methods=["POST"])
 def do_str():
     # print(request.get_json())
-    return str.run(request.get_json())
+    return srt.run(request.get_json())
 
 @app.route("/rr", methods=["POST"])
 def do_rr():
@@ -32,5 +38,5 @@ def do_own():
     return customAlg.run(request.get_json())
 
 
-# if __name__ == '__main__':
-#     app.run()
+if __name__ == '__main__':
+    app.run()

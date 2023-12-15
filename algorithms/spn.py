@@ -113,6 +113,11 @@ def run(data):
     avg_tt = sum(tt.values()) / len(tt.values())
     print("Average turnaround time  =", avg_tt)
 
+    return {
+        "turnaroundtimes": tt,
+        "averageTurnAroundTime": avg_tt
+    }
+
 
 class Process:
     def __init__(self, process_name, arrival_time, service_time):
