@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheduling Algorithm Input</title>
+    <style>
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Scheduling Algorithm Input</h2>
+    <form id="schedulingForm">
+        <label for="numProcesses">Number of Processes:</label>
+        <input type="number" id="numProcesses" name="numProcesses" required>
+
+        <div id="processInputs"></div>
+
+        <h3>Select Scheduling Algorithm:</h3>
+        
+        <label><input type="radio" id="fcfs" name="algorithm" value="fcfs" checked> First Come First Serve (FCFS)</label>
+        <label><input type="radio" id="rr" name="algorithm" value="rr"> Round Robin (RR)</label>
+        <label><input type="radio" id="spn" name="algorithm" value="spn"> Shortest Process Next (SPN)</label>
+        <label><input type="radio" id="str" name="algorithm" value="str"> Shortest Time Remaining (STR)</label>
+        <label><input type="radio" id="hrrn" name="algorithm" value="hrrn"> Highest Responce Ratio Next (HRRN)</label>
+        <label><input type="radio" id="mlf" name="algorithm" value="mlf"> Multilevel Feedback (MLF)</label>
+        <label><input type="radio" id="own" name="algorithm" value="own"> Own (own)</label>
+
+        <button type="button" onclick="generateProcessInputs()">Generate Process Inputs</button>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        numberOfProcess =0 
+        function generateProcessInputs() {
+            const numProcesses = document.getElementById('numProcesses').value;
+            const processInputsContainer = document.getElementById('processInputs');
+            
+            // create html elements for the ui dynamically
+            processInputsContainer.innerHTML = '';
+            for (let i = 0; i < numProcesses; i++) {
+                const processDiv = document.createElement('div');
+                processDiv.innerHTML = `<label for="arrivalTime${i}">Arrival Time for Process ${i + 1}:</label>
+                                        <input type="number" id="arrivalTime${i}" name="arrivalTime${i}" required>
+                                        <label for="serviceTime${i}">Service Time for Process ${i + 1}:</label>
+                                       <input type="number" id="serviceTime${i}" name="serviceTime${i}" required>`;
+                processInputsContainer.appendChild(processDiv);
+            }
+           numberOfProcess=numProcesses
+        }
+        
+
+        document.getElementById('schedulingForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            // Handle form submission here, you can access the values using document.getElementById('elementId').value
+            // and use the selected algorithm radio button value.
+            // const formData = {1:}
+            formData = {}
+            for (let i=0; i<numberOfProcess; i++){
+                arrivalTime = "arrivalTime"
+                arrivalTime+=i
+                serviceTime = "serviceTime"
+                serviceTime+=i
+                console.log(arrivalTime)
+                console.log(serviceTime)
+
+                arrivalTime = document.getElementById(arrivalTime).value;
+                serviceTime = document.getElementById(serviceTime).value;
+                formData[i] = `(${arrivalTime},${serviceTime})`
+            }
+            console.log(numberOfProcess)
+            const algorithmType = document.querySelector('input[type="radio"]:checked').value;
+            console.log(algorithmType)
+            console.log(formData)
+            let url = ""
+            switch(algorithmType){
+                case fcfs:
+                 url = "/fcfs"
+                    break;
+                case hrrn:
+                 url = "/hrrn"
+                    break;
+                case rr:
+                    url= "/rr"
+                    break;
+                case spn:
+                    url= "/spn"
+                    break; 
+                case str:
+                    url= "/str"
+                    break;
+                case mlf:
+                    url= "/mlf"
+                    break;
+                case own:
+                    url= "/own"
+                    break;
+                default:
+                    break;
+            }
+            fetch(url,{
+                method: "POST",
+                body:formData,
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                }
+            })
+            console.log('Form submitted!');
+        });
+    </script>
+</body>
+</html>
