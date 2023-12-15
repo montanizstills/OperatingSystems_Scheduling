@@ -1,60 +1,131 @@
-import time
+'''
+processes have arrival times and service times.
+steps:
+1. calculate waiting time (wt).
+2. calculate turnaround time = service time (st) + wt
 
-from process import Process
-
-ALGORITHM_NAME = "First-Come-First-Serve"
-
-A = Process('A', 0, 4)
-B = Process('B', 1, 9)
-C = Process('C', 4, 2)
-D = Process('D', 6, 7)
-E = Process('E', 4, 7)
-F = Process('F', 3, 12)
-
-
-def get_next_earliest_process(processes: list) -> Process:
-    early: Process = min(processes, key=lambda process: process.arrival_time)
-    print(f"next earliest process: {early.name}")
-    return early
+1. calculate waiting time.
+when a process arrives:
+    all other processes in queue increase their wt by one.
+    the process waits for its turn
+    1. a process finishes executing - dequeue next process
+'''
+import math
+from collections import deque
+ALGORITHM_NAME = "FCFS"
 
 
-def get_next_shortest_process(processes: list):
-    shortest: Process = min(processes, key=lambda process: process.service_time)
-    print(f"next earliest process: {shortest.name}")
-    return shortest
+def convertData(data):
+    arrivals = {}
+    services = {}
+
+    for key in data:
+        item = eval(data[key])
+        services[key] = item[1]
+    for key in data:
+        item = eval(data[key])
+        arrival = item[0]
+        # print(arrival)
+        # exit(1)
+        if arrival in arrivals:
+            arrivals[arrival] = arrivals[arrival].append(key)
+        else:
+            arrivals[arrival] = [key]
+    return arrivals, services
+
+def run(data):
+    arrivals, services = convertData(data)
+    n = len(services)
+    print("arrivals", arrivals)
+    print("services", services)
+    #waiting time
+    wt = {}
+
+    # Setting up latestLength to see how many seconds we have to loop to.
+    latestArrival = max(arrivals.keys())
+    longestService = 0
+    for process in arrivals[latestArrival]:
+        longestService = max(longestService, services[process])
+    latestLength = latestArrival + longestService
+
+    # Initializing remaining service time
+    rt = {}
+
+    # Initially remaining time is the same as service time
+    for i in services.keys():
+        rt[i] = services[i]
+
+    queue = deque()
+    currProcess = ""
+
+    # Count to check whether process has executed up to quantum
+    for i in range(max(sum(services.values()) + 1, latestLength)):
+        # Increase the wait time for all the processes in queue
+        increaseWaitTime(queue, wt)
+
+        # If process arrives then begin servicing if no process currently running
+        # If there is an existing process, add this to queue
+        if i in arrivals:
+            if currProcess == "":
+                currProcess = arrivals[i][0]
+                for j in range(1, len(arrivals[i])):
+                    queue.append(arrivals[i][j])
+            else:
+                for j in range(len(arrivals[i])):
+                    queue.append(arrivals[i][j])
+
+        # If no process has arrived, then currProcess is set to ""
+        elif currProcess == "":
+            continue
+
+        # If the process had been completed, then remove from processor and pop process from queue
+        if currProcess != "" and rt[currProcess] == 0:
+            if queue:
+                currProcess = queue.popleft()
+            else:
+                currProcess = ""
+
+        # If a process is running, reduce remaining time to completion by 1 second
+        if currProcess != "":
+            rt[currProcess] -= 1
+
+    print("wait times = ", dict(sorted(wt.items())))
+
+    tt = calculateTurnaroundTime(services, wt)
+    print("turnaround time =", tt)
+
+    avg_tt = sum(tt.values()) / len(tt.values())
+    print("Average turnaround time  =", avg_tt)
 
 
-def execute_process(process: Process):
-    for _i in range(1, process.service_time + 1):
-        print(f"executing process {process.name}...")
-        print(f"Elapsed time {_i}")
+# Function to increase the wait times of the processes every second they are in the waiting queue.
+def increaseWaitTime(queue, wt):
+    if queue:
+        for process in queue:
+            wt[process] = wt.get(process, 0) + 1
 
 
-def non_preemptive(processes: list):
-    all_process_completion_time = 0
-    while processes:
-        cpu_start = time.time()
-        process_to_execute = get_next_earliest_process(processes)
-        execute_process(process_to_execute)
-        processes.remove(process_to_execute)
-        cpu_end = time.time()
-
-    average_turn_around_time = 0  # GOAL
-    # wait time for each process # GOAL
-
-
-def preemptive(processes: list):
-    pass
-
-
-def fcfs_algorithm(
-        processes: list,
-        is_preemptive: bool
-):
-    if is_preemptive:
-        preemptive(processes)
-    non_preemptive(processes)
+# Turnaround time = service time + wait time
+def calculateTurnaroundTime(services, wt):
+    tt = {}
+    for key, val in services.items():
+        tt[key] = val + wt.get(key, 0)
+    return tt
 
 
 if __name__ == "__main__":
-    fcfs_algorithm([A, B, C, D, E, F], False)
+    data = {
+        'A': '(0, 10)',
+        'B': '(3, 2)',
+        'C': '(6, 8)',
+        'D': '(8, 7)'
+    }
+    run(data)
+
+
+
+
+
+
+
+

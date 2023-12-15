@@ -16,17 +16,7 @@ import math
 from collections import deque
 ALGORITHM_NAME = "RoundRobin"
 
-# Saving the value as a list because multiple processes can arrive at the same time
-arrivals = {0: ["A"], 3: ["B"], 6: ["C"], 8: ["D"]}
-services = {"A": 10, "B": 2, "C": 8, "D": 7}
-'''
-test_processes = {
-    'A': (0, 10),
-    'B': (3, 2),
-    'C': (6, 8),
-    'D': (8, 7)
-}
-'''
+
 def convertData(data):
     arrivals = {}
     services = {}
@@ -44,7 +34,10 @@ def convertData(data):
         else:
             arrivals[arrival] = [key]
     return arrivals, services
+
+
 def run(data):
+    arrivals, services = convertData(data)
     n = len(services)
 
     #waiting time
@@ -153,10 +146,10 @@ def calculateTurnaroundTime(services, wt):
 
 if __name__ == "__main__":
     data = {
-        'A': (0, 10),
-        'B': (3, 2),
-        'C': (6, 8),
-        'D': (8, 7)
+        'A': '(0, 10)',
+        'B': '(3, 2)',
+        'C': '(6, 8)',
+        'D': '(8, 7)'
     }
     run(data)
 
