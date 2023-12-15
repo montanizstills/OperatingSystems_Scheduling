@@ -17,8 +17,13 @@ class Algorithm:
     def get_execution_mode(self):
         return self.EXECUTION_MODE
 
-    def run(self, queue: Queue):
-        getattr(self, self.get_execution_mode().value.lower())(queue)
+    def run(self, queue: Queue, time_quantum: int):
+        func = getattr(self, self.get_execution_mode().value.lower())
+        if func.__name__ == 'preemptive':
+            if time_quantum == -1:
+                exit("Please specify a time quantum, negro.")
+            func(queue, time_quantum)
+        func(queue)
 
     def get_next_earliest_process(self, queue: Queue) -> Process:
         early: Process = min(queue.get_instance(), key=lambda process: process.arrival_time)

@@ -19,7 +19,6 @@ class QueueObserver(threading.Thread):
         while True:
             if self.interrupt_event.is_set():
                 print(f"Observer: `{self.__class__} interrupt has been set")  # TODO - remove 2
-                pass
             print(f"Observer: `{self.__class__}` is running")  # TODO - remove 3
             time.sleep(1)  # TODO - remove 1
             if self.queue.arrival_flag:

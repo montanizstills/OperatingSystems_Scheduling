@@ -10,9 +10,9 @@ class CPU(threading.Thread):
     algorithm_execution_type: Algorithm
     observer = QueueObserver()
 
-    def __init__(self, queue: Queue = None):
+    def __init__(self):
         super().__init__()
-        self.queue = queue
+        self.queue = Queue()
         self.interrupt_event = threading.Event()
         self.executing_time: float
         self.total_elapsed_time: float
