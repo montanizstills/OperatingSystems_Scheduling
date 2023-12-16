@@ -1,9 +1,22 @@
 ALGORITHM_NAME = "Multilevel-Feedback"
 
+'''
+processes have arrival times and service times.
+steps:
+1. calculate waiting time (wt).
+2. calculate turnaround time = service time (st) + wt
+
+1. calculate waiting time.
+when a process arrives:
+    all other processes in queue increase their wt by one.
+    the process waits for its turn
+    it runs for the quantum:
+        1. a process finishes executing - dequeue next process
+        2. a process doesn't finish but exceeds its quantum - put process back in queue, dequeue next process.
+'''
 import math
 from collections import deque
 ALGORITHM_NAME = "Multi-Level Feedback"
-
 
 def convertData(data):
     processes = []
@@ -86,11 +99,19 @@ if __name__ == "__main__":
         'E': '(8, 2)'
     }
     processes = convertData(data)
-    # time_quantum = calculateQuantum(processes)
-    time_quantum = 4
+    time_quantum = calculateQuantum(processes)
     print(time_quantum)
     result = multilevel_feedback_queue(processes, time_quantum)
 
     print("Process Execution Order:")
     for process, completion_time in result:
         print(f"{process} completed at time {completion_time}")
+
+
+
+
+
+
+
+
+
