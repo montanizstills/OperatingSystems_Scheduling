@@ -73,7 +73,7 @@ def multilevel_feedback_queue(processes, time_quantum):
         while processes and processes[0].arrival_time <= current_time:
             queues[0].append(processes.pop(0))
 
-        for i in range(2, -1, -1):  # Start from the highest priority queue
+        for i in range(2):  # Start from the highest priority queue
             if queues[i]:
                 current_process = queues[i][0]
                 time_executed = current_process.execute(time_quantum)
@@ -108,12 +108,3 @@ if __name__ == "__main__":
     print("Process Execution Order:")
     for process, completion_time in result:
         print(f"{process} completed at time {completion_time}")
-
-
-
-
-
-
-
-
-
