@@ -18,6 +18,7 @@ import math
 from collections import deque
 ALGORITHM_NAME = "Multi-Level Feedback"
 
+
 def convertData(data):
     processes = []
 
@@ -62,7 +63,7 @@ class Process:
 
 
 def multilevel_feedback_queue(processes, time_quantum):
-    queues = [[] for _ in range(3)]  # Three priority queues
+    queues = [[] for _ in range(2)]  # Three priority queues
 
     current_time = 0
     completed_processes = []
@@ -88,12 +89,22 @@ def multilevel_feedback_queue(processes, time_quantum):
 
     return completed_processes
 
+def run(data):
+    processes = convertData(data)
+    time_quantum = calculateQuantum(processes)
+    print(time_quantum)
+    result = multilevel_feedback_queue(processes, time_quantum)
+    formatted_result = []
+    print("hiii")
+    for process, completion_time in result:
+        formatted_result.append(f"{process} completed at time {completion_time}")
+    return formatted_result
 
 # Example usage
 if __name__ == "__main__":
     data = {
-        'A': '(0, 3)',
-        'B': '(2, 6)',
+        'A': '(2, 1)',
+        'B': '(1, 4)',
         'C': '(4, 4)',
         'D': '(6, 5)',
         'E': '(8, 2)'
